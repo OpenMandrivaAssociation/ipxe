@@ -1,0 +1,13 @@
+diff --git a/src/arch/i386/Makefile b/src/arch/i386/Makefile
+index 068fbd6..43ff868 100644
+--- a/src/arch/i386/Makefile
++++ b/src/arch/i386/Makefile
+@@ -74,7 +74,7 @@ ISOLINUX_BIN_LIST	:= \
+ 	/usr/lib/syslinux/isolinux.bin \
+ 	/usr/share/syslinux/isolinux.bin \
+ 	/usr/local/share/syslinux/isolinux.bin
+-ISOLINUX_BIN	= $(firstword $(wildcard $(ISOLINUX_BIN_LIST)))
++ISOLINUX_BIN	= /usr/lib/syslinux/isolinux.bin
+ 
+ # i386-specific directories containing source files
+ #
