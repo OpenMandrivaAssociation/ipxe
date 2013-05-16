@@ -1,14 +1,13 @@
-
 # Resulting binary formats we want from iPXE
 %global formats rom
 
 # PCI IDs (vendor,product) of the ROMS we want for QEMU
 #
-#    pcnet32: 0x1022 0x2000
-#   ne2k_pci: 0x10ec 0x8029
-#      e1000: 0x8086 0x100e
-#    rtl8139: 0x10ec 0x8139
-# virtio-net: 0x1af4 0x1000
+#    pcnet32:	0x1022 0x2000
+#   ne2k_pci:	0x10ec 0x8029
+#      e1000:	0x8086 0x100e
+#    rtl8139:	0x10ec 0x8139
+# virtio-net:	0x1af4 0x1000
 %global qemuroms 10222000 10ec8029 8086100e 10ec8139 1af41000
 
 # We only build the ROMs if on an x86 build host. The resulting
@@ -34,48 +33,34 @@
 %global date 20120328
 %global hash aac9718
 
-Name:    ipxe
-Version: 1.0.0
-Release: %mkrel 0.git.%{date}
-Summary: A network boot loader
-
-Group:   System/Configuration/Boot and Init 
-License: GPLv2 and BSD
-URL:     http://ipxe.org/
-
-Source0: %{name}-%{date}-git%{hash}.tar.gz
-Source1: USAGE
-# Remove 2 second startup wait. This patch is not intended to
-# go upstream. Modifying the general config header file is the
-# intended means for downstream customization.
-Patch0: isolinux.patch
-Patch1: %{name}-banner-timeout.patch
+Summary:	A network boot loader
+Name:		ipxe
+Version:	1.0.0
+Release:	0.git.%{date}
+Group:		System/Configuration/Boot and Init 
+License:	GPLv2 and BSD
+Url:		http://ipxe.org/
+Source0:	%{name}-%{date}-git%{hash}.tar.gz
+Source1:	USAGE
+Patch1:		%{name}-banner-timeout.patch
 
 %ifarch %{buildarches}
-BuildRequires: perl
-BuildRequires: syslinux
-BuildRequires: mtools
-BuildRequires: mkisofs
-Obsoletes: gpxe <= 1.0.1
+BuildRequires:	mkisofs
+BuildRequires:	mtools
+BuildRequires:	perl
+BuildRequires:	syslinux
+Obsoletes:	gpxe <= 1.0.1
+
+%description
+iPXE is an open source network bootloader. It provides a direct
+replacement for proprietary PXE ROMs, with many extra features such as
+DNS, HTTP, iSCSI, etc.
 
 %package bootimgs
-Summary: Network boot loader images in bootable USB, CD, floppy and GRUB formats
-Group:   Emulators
-BuildArch: noarch
-Obsoletes: gpxe-bootimgs <= 1.0.1
-
-%package roms
-Summary: Network boot loader roms in .rom format
-Group:  Emulators
-Requires: %{name}-roms-qemu = %{version}-%{release}
-BuildArch: noarch
-Obsoletes: gpxe-roms <= 1.0.1
-
-%package roms-qemu
-Summary: Network boot loader roms supported by QEMU, .rom format
-Group:  Emulators
-BuildArch: noarch
-Obsoletes: gpxe-roms-qemu <= 1.0.1
+Summary:	Network boot loader images in bootable USB, CD, floppy and GRUB formats
+Group:		Emulators
+BuildArch:	noarch
+Obsoletes:	gpxe-bootimgs <= 1.0.1
 
 %description bootimgs
 iPXE is an open source network bootloader. It provides a direct
@@ -85,6 +70,13 @@ DNS, HTTP, iSCSI, etc.
 This package contains the iPXE boot images in USB, CD, floppy, and PXE
 UNDI formats.
 
+%package roms
+Summary:	Network boot loader roms in .rom format
+Group:		Emulators
+Requires:	%{name}-roms-qemu = %{version}-%{release}
+BuildArch:	noarch
+Obsoletes:	gpxe-roms <= 1.0.1
+
 %description roms
 iPXE is an open source network bootloader. It provides a direct
 replacement for proprietary PXE ROMs, with many extra features such as
@@ -92,6 +84,11 @@ DNS, HTTP, iSCSI, etc.
 
 This package contains the iPXE roms in .rom format.
 
+%package roms-qemu
+Summary:	Network boot loader roms supported by QEMU, .rom format
+Group:		Emulators
+BuildArch:	noarch
+Obsoletes:	gpxe-roms-qemu <= 1.0.1
 
 %description roms-qemu
 iPXE is an open source network bootloader. It provides a direct
@@ -102,15 +99,9 @@ This package contains the iPXE ROMs for devices emulated by QEMU, in
 .rom format.
 %endif
 
-%description
-iPXE is an open source network bootloader. It provides a direct
-replacement for proprietary PXE ROMs, with many extra features such as
-DNS, HTTP, iSCSI, etc.
-
 %prep
-%setup -q -n %{name}-%{date}-git%{hash}
-#% patch0 -p1
-%patch1 -p1
+%setup -qn %{name}-%{date}-git%{hash}
+%apply_patches
 cp -a %{SOURCE1} .
 
 %build
@@ -124,9 +115,11 @@ cd src
 # ath9k drivers are too big for an Option ROM
 rm -rf drivers/net/ath/ath9k
 
-#make %{?_smp_mflags} bin/undionly.kpxe bin/ipxe.{dsk,iso,usb,lkrn} allroms \
-make bin/undionly.kpxe bin/ipxe.{dsk,iso,usb,lkrn} allroms \
-                   ISOLINUX_BIN=${ISOLINUX_BIN} NO_WERROR=1 V=1
+make \
+	bin/undionly.kpxe \
+	bin/ipxe.{dsk,iso,usb,lkrn} \
+	allroms \
+        ISOLINUX_BIN=${ISOLINUX_BIN} NO_WERROR=1 V=1
 %endif
 
 %install
@@ -174,3 +167,4 @@ done
 %dir %{_datadir}/%{name}
 %doc COPYING COPYRIGHTS
 %endif
+
