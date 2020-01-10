@@ -101,7 +101,7 @@ This package contains the iPXE ROMs for devices emulated by QEMU, in
 
 %prep
 %setup -qn %{name}-%{date}-git%{hash}
-%apply_patches
+%autopatch -p1
 cp -a %{SOURCE1} .
 
 %build
