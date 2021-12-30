@@ -47,6 +47,7 @@ BuildRequires:	mkisofs
 BuildRequires:	mtools
 BuildRequires:	perl
 BuildRequires:	syslinux
+BuildRequires:	pkgconfig(lzo2)
 Obsoletes:	gpxe <= 1.0.1
 
 %description
