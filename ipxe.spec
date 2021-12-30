@@ -31,18 +31,16 @@
 # And then change these two:
 
 %global date 20120328
-%global hash aac9718
-
+%global hash 9062544
 Summary:	A network boot loader
 Name:		ipxe
-Version:	1.0.0
+Version:	1.2.1
 Release:	0.git.%{date}
 Group:		System/Configuration/Boot and Init 
 License:	GPLv2 and BSD
 Url:		http://ipxe.org/
-Source0:	%{name}-%{date}-git%{hash}.tar.gz
+Source0:	%{name}-%{version}.tar.xz
 Source1:	USAGE
-Patch1:		%{name}-banner-timeout.patch
 
 %ifarch %{buildarches}
 BuildRequires:	mkisofs
@@ -100,7 +98,7 @@ This package contains the iPXE ROMs for devices emulated by QEMU, in
 %endif
 
 %prep
-%setup -qn %{name}-%{date}-git%{hash}
+%setup -qn %{name}-%{version}
 %autopatch -p1
 cp -a %{SOURCE1} .
 
@@ -157,14 +155,14 @@ done
 %{_datadir}/%{name}/ipxe.dsk
 %{_datadir}/%{name}/ipxe.lkrn
 %{_datadir}/%{name}/undionly.kpxe
-%doc COPYING COPYRIGHTS USAGE
+%doc COPYING USAGE
 
 %files roms -f rom.list
 %dir %{_datadir}/%{name}
-%doc COPYING COPYRIGHTS
+%doc COPYING 
 
 %files roms-qemu -f qemu.rom.list
 %dir %{_datadir}/%{name}
-%doc COPYING COPYRIGHTS
+%doc COPYING 
 %endif
 
