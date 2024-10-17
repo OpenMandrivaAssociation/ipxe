@@ -38,7 +38,7 @@ Version:	1.2.1
 Release:	0.git.%{date}
 Group:		System/Configuration/Boot and Init 
 License:	GPLv2 and BSD
-Url:		http://ipxe.org/
+Url:		https://ipxe.org/
 Source0:	%{name}-%{version}.tar.xz
 Source1:	USAGE
 
