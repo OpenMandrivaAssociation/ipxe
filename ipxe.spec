@@ -43,6 +43,7 @@ Source0:	%{name}-%{version}.tar.xz
 Source1:	USAGE
 
 %ifarch %{buildarches}
+BuildRequires:	make
 BuildRequires:	mkisofs
 BuildRequires:	mtools
 BuildRequires:	perl
